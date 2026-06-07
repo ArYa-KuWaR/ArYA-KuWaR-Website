@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  SECURITY HEADERS (meta equivalents)                        ║
+    ║  For full protection, also set these as HTTP headers        ║
+    ║  via your server / _headers file — see DEPLOY.md            ║
+    ╚══════════════════════════════════════════════════════════════╝
+  -->
+
+  <!--
+    Content Security Policy:
+    - script-src 'self'            → only /js/main.js allowed; no inline scripts, no eval
+    - style-src 'self' fonts.googleapis.com → external CSS for Google Fonts only
+    - font-src 'self' fonts.gstatic.com    → font files from gstatic only
+    - img-src 'self' data:                 → local images + base64 data URIs only
+    - connect-src 'none'                   → zero XHR / fetch allowed
+    - frame-ancestors 'none'               → blocks clickjacking via iframes
+    - base-uri 'self'                      → prevents base tag injection
+    - form-action 'none'                   → no form submissions (static site)
+    - object-src 'none'                    → no Flash / plugins
+    - upgrade-insecure-requests            → force HTTPS on mixed content
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'none';
+          script-src 'self';
+          style-src 'self' https://fonts.googleapis.com;
+          font-src 'self' https://fonts.gstatic.com;
+          img-src 'self' data:;
+          connect-src 'none';
+          frame-ancestors 'none';
+          base-uri 'self';
+          form-action 'none';
+          object-src 'none';
+          upgrade-insecure-requests;
+        ">
+
+  <!-- Prevent MIME-type sniffing -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <!-- Referrer policy — don't leak full URL to external sites -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Permissions policy — disable APIs we don't use -->
+  <meta http-equiv="Permissions-Policy"
+        content="camera=(), microphone=(), geolocation=(), payment=(), usb=()">
+
+  <title>Arya Kuwar // Security Engineer</title>
+  <meta name="description"
+        content="Arya Kuwar — Security Engineer specialising in penetration testing, cloud security, and zero-trust architecture. ISC2 CC, CCNA certified. VAPT Intern at ADNOXY.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Arya Kuwar">
+
+  <!-- Open Graph (LinkedIn previews) -->
+  <meta property="og:title"       content="Arya Kuwar // Security Engineer">
+  <meta property="og:description" content="Penetration testing, cloud security, zero-trust architecture.">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://arya-kuwar.github.io">
+
+  <!-- Google Fonts — preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Accessibility: skip to main content -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Custom cursor (hidden on touch/mobile via CSS) -->
+  <div class="cursor"      id="cursor"      aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Matrix rain canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- ══════════════════════════════════════
+       NAV
+       ══════════════════════════════════════ -->
+  <nav role="navigation" aria-label="Primary navigation">
+    <a href="#hero" class="nav-logo" aria-label="Arya Kuwar — home">
+      AK<span>://</span>KUWAR
+    </a>
+
+    <button class="nav-toggle"
+            id="nav-toggle"
+            aria-controls="nav-links"
+            aria-expanded="false"
+            aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#experience">exp</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#ctf">ctf</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ══════════════════════════════════════
+         01 — HERO
+         ══════════════════════════════════════ -->
+    <section id="hero" aria-label="Introduction">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <p class="hero-tag" aria-hidden="true">// SECURITY ENGINEER &amp; ETHICAL HACKER</p>
+
+          <h1 class="hero-name">
+            ARYA<br>
+            <span class="accent">KU</span><span class="accent2">WAR</span>
+          </h1>
+
+          <p class="hero-title">VAPT · CLOUD SECURITY · SYSTEMS HARDENING</p>
+
+          <p class="hero-desc">
+            I find the holes before the bad guys do — then I write a very professional report about it.
+            Specialising in penetration testing, post-quantum cryptography, and zero-trust architectures.
+            CGPA: 8.38 (so yes, I do attend classes).
+          </p>
+
+          <div class="hero-cta">
+            <a href="#projects" class="btn-primary">
+              <span>→ VIEW WORK</span>
+            </a>
+            <a href="#contact" class="btn-secondary">
+              GET IN TOUCH
+            </a>
+          </div>
+        </div><!-- /.hero-left -->
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="terminal" role="img" aria-label="Terminal showing Arya Kuwar's profile">
+            <div class="terminal-bar">
+              <span class="dot r"></span>
+              <span class="dot y"></span>
+              <span class="dot g"></span>
+              <span class="terminal-title">arya@kali ~ // whoami</span>
+            </div>
+            <div class="terminal-body">
+              <span class="t-line"><span class="t-prompt">┌──(arya㉿kali)-[~]</span></span>
+              <span class="t-line"><span class="t-prompt">└─$</span> <span class="t-cmd">whoami</span></span>
+              <span class="t-line"><span class="t-out">  name      </span> → <span class="t-val">Arya Kuwar</span></span>
+              <span class="t-line"><span class="t-out">  role      </span> → <span class="t-val">Security Engineer</span></span>
+              <span class="t-line"><span class="t-out">  certs     </span> → <span class="t-val">ISC2 CC, CCNA, CEH</span></span>
+              <span class="t-line"><span class="t-out">  ctf_rank  </span> → <span class="t-val">#33 National (Pentathon)</span></span>
+              <span class="t-line"><span class="t-out">  location  </span> → <span class="t-val">Pune, India</span></span>
+              <span class="t-line"></span>
+              <span class="t-line"><span class="t-prompt">└─$</span> <span class="t-cmd">cat specializations.txt</span></span>
+              <span class="t-line"><span class="t-val">  [*]</span> <span class="t-out">Penetration Testing (OWASP)</span></span>
+              <span class="t-line"><span class="t-val">  [*]</span> <span class="t-out">Post-Quantum Cryptography</span></span>
+              <span class="t-line"><span class="t-val">  [*]</span> <span class="t-out">Zero Trust Architecture</span></span>
+              <span class="t-line"><span class="t-val">  [*]</span> <span class="t-out">AWS Cloud Security (IAM)</span></span>
+              <span class="t-line"></span>
+              <span class="t-line"><span class="t-warn">  // currently: seeking new targets</span></span>
+              <span class="t-line"><span class="t-prompt">└─$</span> <span class="cursor-blink"></span></span>
+            </div>
+          </div>
+        </div><!-- /.hero-right -->
+      </div><!-- /.hero-grid -->
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         STATS STRIP
+         ══════════════════════════════════════ -->
+    <div class="stats-strip" role="region" aria-label="Key statistics">
+      <div class="stat-item">
+        <span class="stat-num" data-count="2" data-suffix="">2</span>
+        <span class="stat-label">HIGH SEVERITY VULNS FOUND</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="6" data-suffix="">6</span>
+        <span class="stat-label">PoC REPORTS DELIVERED</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">#33</span>
+        <span class="stat-label">NATIONAL CTF RANK</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="3" data-suffix="+">3+</span>
+        <span class="stat-label">SECURITY TOOLS BUILT</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="8.38" data-float="true">8.38</span>
+        <span class="stat-label">CGPA (VIIT)</span>
+      </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         02 — ABOUT
+         ══════════════════════════════════════ -->
+    <section id="about" aria-labelledby="about-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">01 //</span>
+          <h2 class="section-title" id="about-heading">ABOUT</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <p>
+              B.Tech student at <span class="highlight">Vishwakarma Institute of Information Technology</span>,
+              majoring in Computer Science with a focus on IoT, Cybersecurity &amp; Blockchain Technology.
+              I spend most of my time breaking things (with permission) and figuring out why they broke —
+              then writing a report about it.
+            </p>
+            <p>
+              My work spans <span class="highlight">web application penetration testing</span>,
+              post-quantum cryptography, AWS cloud security, and OT network segmentation. I have a thing for
+              systems that are supposed to be unbreakable — they're the most fun to analyse.
+            </p>
+            <blockquote class="about-witty">
+              "I don't have root access to your system. Yet."
+            </blockquote>
+            <p>
+              Former Production Head at Vicsta (2023–2024), and the person responsible for getting 300+ people
+              to think twice about their password hygiene at Cyber Hygiene Day.
+              Results may vary — I've seen what passwords people choose.
+            </p>
+            <p>
+              Currently pursuing <span class="highlight">CEH v13</span> and always hunting for the
+              next interesting exploit to research.
+            </p>
+          </div>
+
+          <div class="cert-stack reveal">
+            <div class="cert-card">
+              <div class="cert-icon" aria-hidden="true">🛡️</div>
+              <div>
+                <div class="cert-name">ISC2 CC</div>
+                <div class="cert-body">Certified in Cybersecurity</div>
+              </div>
+              <div class="cert-badge">ACTIVE</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon" aria-hidden="true">🌐</div>
+              <div>
+                <div class="cert-name">CCNA Cybersecurity</div>
+                <div class="cert-body">Cybersecurity Essentials</div>
+              </div>
+              <div class="cert-badge">ACTIVE</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon" aria-hidden="true">📡</div>
+              <div>
+                <div class="cert-name">CCNA Wireless</div>
+                <div class="cert-body">Wireless Essentials</div>
+              </div>
+              <div class="cert-badge">ACTIVE</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon" aria-hidden="true">⚔️</div>
+              <div>
+                <div class="cert-name">CEH v13</div>
+                <div class="cert-body">Certified Ethical Hacker</div>
+              </div>
+              <div class="cert-badge ongoing">IN PROGRESS</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon" aria-hidden="true">🎓</div>
+              <div>
+                <div class="cert-name">B.Tech CSE</div>
+                <div class="cert-body">VIIT Pune — IoT · Cyber · Blockchain</div>
+              </div>
+              <div class="cert-badge">8.38 GPA</div>
+            </div>
+          </div>
+        </div><!-- /.about-grid -->
+      </div><!-- /.section-inner -->
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         03 — SKILLS
+         ══════════════════════════════════════ -->
+    <section id="skills" aria-labelledby="skills-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">02 //</span>
+          <h2 class="section-title" id="skills-heading">ARSENAL</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <div class="skill-group-title">OFFENSIVE SECURITY</div>
+            <ul class="skill-tags" role="list" aria-label="Offensive security skills">
+              <li class="skill-tag">Penetration Testing</li>
+              <li class="skill-tag">Ethical Hacking</li>
+              <li class="skill-tag">Exploit Development</li>
+              <li class="skill-tag">OWASP Top 10</li>
+              <li class="skill-tag">Burp Suite</li>
+              <li class="skill-tag">Nmap</li>
+              <li class="skill-tag">Subfinder</li>
+              <li class="skill-tag">Recon &amp; OSINT</li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <div class="skill-group-title">CLOUD &amp; INFRA</div>
+            <ul class="skill-tags" role="list" aria-label="Cloud and infrastructure skills">
+              <li class="skill-tag green">AWS Security</li>
+              <li class="skill-tag green">IAM Analysis</li>
+              <li class="skill-tag green">Zero Trust Architecture</li>
+              <li class="skill-tag green">Kubernetes (K8s)</li>
+              <li class="skill-tag green">NIST SP 800</li>
+              <li class="skill-tag green">IEC 62443</li>
+              <li class="skill-tag green">ISO 27001</li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <div class="skill-group-title">SYSTEMS &amp; OS</div>
+            <ul class="skill-tags" role="list" aria-label="Systems and OS skills">
+              <li class="skill-tag orange">Linux (Kali / Ubuntu / Parrot)</li>
+              <li class="skill-tag orange">Bash Scripting</li>
+              <li class="skill-tag orange">System Administration</li>
+              <li class="skill-tag orange">Service Enumeration</li>
+              <li class="skill-tag orange">Log Analysis</li>
+              <li class="skill-tag orange">DNS / Networking</li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <div class="skill-group-title">CRYPTOGRAPHY</div>
+            <ul class="skill-tags" role="list" aria-label="Cryptography skills">
+              <li class="skill-tag">Post-Quantum (ML-KEM-1024)</li>
+              <li class="skill-tag">Homomorphic Encryption</li>
+              <li class="skill-tag">TenSEAL</li>
+              <li class="skill-tag">mTLS</li>
+              <li class="skill-tag">PKI</li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <div class="skill-group-title">LANGUAGES &amp; TOOLS</div>
+            <ul class="skill-tags" role="list" aria-label="Programming languages and tools">
+              <li class="skill-tag">Python</li>
+              <li class="skill-tag">Bash</li>
+              <li class="skill-tag">Git</li>
+              <li class="skill-tag">boto3</li>
+              <li class="skill-tag">scapy</li>
+              <li class="skill-tag">paramiko</li>
+              <li class="skill-tag">Flask</li>
+              <li class="skill-tag">React</li>
+            </ul>
+          </div>
+
+          <div class="skill-group reveal">
+            <div class="skill-group-title">MONITORING &amp; ANALYSIS</div>
+            <ul class="skill-tags" role="list" aria-label="Monitoring and analysis skills">
+              <li class="skill-tag green">Prometheus</li>
+              <li class="skill-tag green">Grafana</li>
+              <li class="skill-tag green">NetworkX</li>
+              <li class="skill-tag green">Isolation Forest</li>
+              <li class="skill-tag green">Anomaly Detection</li>
+              <li class="skill-tag green">Threat Analysis</li>
+            </ul>
+          </div>
+        </div><!-- /.skills-grid -->
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         04 — EXPERIENCE
+         ══════════════════════════════════════ -->
+    <section id="experience" aria-labelledby="experience-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">03 //</span>
+          <h2 class="section-title" id="experience-heading">EXPERIENCE</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <article class="exp-item reveal">
+          <div class="exp-meta">
+            <time class="exp-period" datetime="2025-12/2026-03">DEC 2025 — MAR 2026</time>
+            <div class="exp-company">ADNOXY</div>
+            <div class="exp-type">Internship</div>
+          </div>
+          <div class="exp-content">
+            <h3 class="exp-role">VAPT Intern</h3>
+            <ul class="exp-bullets">
+              <li>
+                Performed web application penetration testing targeting authentication flaws, input validation
+                bypasses, and access control weaknesses in real-world production environments.
+              </li>
+              <li>
+                Discovered <strong>2 High Severity Vulnerabilities</strong>, delivered 6 structured
+                proof-of-concept reports, and collaborated with internal teams on rapid remediation strategies.
+              </li>
+              <li>
+                Leveraged Burp Suite, Nmap, Subfinder, and automated scanning engines for deep-dive
+                reconnaissance and service enumeration.
+              </li>
+              <li>
+                Documented test scope, methodology, and findings in structured formats to support repeatable,
+                auditable security assessments.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         05 — PROJECTS
+         ══════════════════════════════════════ -->
+    <section id="projects" aria-labelledby="projects-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">04 //</span>
+          <h2 class="section-title" id="projects-heading">PROJECTS</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <p class="projects-subheading">
+          // Things I built so I could break other things more effectively (and legally).
+        </p>
+
+        <div class="projects-grid">
+
+          <article class="project-card reveal">
+            <div class="project-corner" aria-hidden="true"></div>
+            <div class="project-icon" aria-hidden="true">🔐</div>
+            <h3 class="project-name">PQC + HE Chat App</h3>
+            <p class="project-desc">
+              Post-quantum secure messaging application using ML-KEM-1024, engineered to defeat
+              harvest-now-decrypt-later attacks before quantum computers make them a Tuesday afternoon
+              problem. Integrated TenSEAL homomorphic encryption for encrypted server-side computation.
+            </p>
+            <ul class="project-tags" role="list" aria-label="Technologies used">
+              <li class="project-tag">ML-KEM-1024</li>
+              <li class="project-tag">TenSEAL</li>
+              <li class="project-tag">HE</li>
+              <li class="project-tag">Python</li>
+              <li class="project-tag">Post-Quantum</li>
+            </ul>
+            <a href="https://github.com/ArYa-KuWaR/PQC-Homomorphic-Encryption-Industry-Project"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="project-link">
+              github.com/ArYa-KuWaR
+            </a>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-corner" aria-hidden="true"></div>
+            <div class="project-icon" aria-hidden="true">☁️</div>
+            <h3 class="project-name">NHI-Shadow-Scanner</h3>
+            <p class="project-desc">
+              AWS IAM security tool that maps over-privileged Non-Human Identities using NetworkX graph
+              analytics — because sometimes the scariest threat in your cloud isn't a hacker, it's a
+              misconfigured service account.
+            </p>
+            <ul class="project-tags" role="list" aria-label="Technologies used">
+              <li class="project-tag">AWS IAM</li>
+              <li class="project-tag">boto3</li>
+              <li class="project-tag">NetworkX</li>
+              <li class="project-tag">Flask API</li>
+              <li class="project-tag">React</li>
+            </ul>
+            <a href="https://github.com/ArYa-KuWaR/NHI-Shadow--Scanner"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="project-link">
+              github.com/ArYa-KuWaR
+            </a>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-corner" aria-hidden="true"></div>
+            <div class="project-icon" aria-hidden="true">🏭</div>
+            <h3 class="project-name">Zero-Trust-Factory</h3>
+            <p class="project-desc">
+              IEC 62443 / NIST-compliant OT network segmentation baseline. Modelled Purdue zoning, mTLS
+              enforcement, and K8s pod isolation. Embedded Isolation Forest anomaly detection on Jetson
+              Nano with real-time Prometheus/Grafana alerting.
+            </p>
+            <ul class="project-tags" role="list" aria-label="Technologies used">
+              <li class="project-tag">Zero Trust</li>
+              <li class="project-tag">IEC 62443</li>
+              <li class="project-tag">Kubernetes</li>
+              <li class="project-tag">mTLS</li>
+              <li class="project-tag">ML Anomaly</li>
+            </ul>
+            <a href="https://github.com/ArYa-KuWaR/Zero-Trust-Factory"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="project-link">
+              github.com/ArYa-KuWaR
+            </a>
+          </article>
+
+        </div><!-- /.projects-grid -->
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         06 — CTF & WRITEUPS
+         ══════════════════════════════════════ -->
+    <section id="ctf" aria-labelledby="ctf-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">05 //</span>
+          <h2 class="section-title" id="ctf-heading">CTF &amp; WRITEUPS</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <p class="ctf-intro">
+          // Competitive hacking — where it's totally legal to pop shells and chain exploits.
+          Participating in CTFs is how I stress-test skills against real adversarial problem sets.
+          The scoreboard doesn't lie (unlike some CVSS ratings I've seen in the wild).
+        </p>
+
+        <p class="ctf-witty">
+          "I placed 33rd nationally. The 32 people ahead of me simply hadn't slept in longer."
+        </p>
+
+        <div class="ctf-grid reveal">
+          <div class="ctf-card">
+            <div>
+              <div class="ctf-event-name">Pentathon 2025</div>
+              <div class="ctf-event-sub">National CTF Competition</div>
+            </div>
+            <div class="ctf-rank">
+              #33
+              <span>NATIONAL</span>
+            </div>
+          </div>
+
+          <div class="ctf-card">
+            <div>
+              <div class="ctf-event-name">College CTF Challenge</div>
+              <div class="ctf-event-sub">VIIT Internal</div>
+            </div>
+            <div class="ctf-rank">
+              #4
+              <span>COLLEGE</span>
+            </div>
+          </div>
+
+          <div class="ctf-card">
+            <div>
+              <div class="ctf-event-name">BITSctf</div>
+              <div class="ctf-event-sub">Open CTF</div>
+            </div>
+            <div class="ctf-rank">
+              #83
+              <span>OPEN</span>
+            </div>
+          </div>
+
+          <div class="ctf-card">
+            <div>
+              <div class="ctf-event-name">WCHL Hackathon</div>
+              <div class="ctf-event-sub">National Qualifier</div>
+            </div>
+            <div class="ctf-rank">
+              QUAL
+              <span>NATIONAL</span>
+            </div>
+          </div>
+        </div><!-- /.ctf-grid -->
+
+        <div class="writeup-section-title" aria-label="Writeup links section">THM &amp; CTF WRITEUPS</div>
+        <div class="writeup-links reveal">
+          <!-- Update these hrefs when you publish writeups -->
+          <a href="https://github.com/ArYa-KuWaR"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="writeup-link">→ TryHackMe Writeups</a>
+          <a href="https://github.com/ArYa-KuWaR"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="writeup-link">→ CTF Challenge Solutions</a>
+          <a href="https://github.com/ArYa-KuWaR"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="writeup-link">→ Pentathon 2025 Notes</a>
+          <a href="https://github.com/ArYa-KuWaR"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="writeup-link">→ BITSctf Writeups</a>
+        </div>
+
+        <p class="writeup-footer">
+          // Full writeup repository →
+          <a href="https://github.com/ArYa-KuWaR"
+             target="_blank"
+             rel="noopener noreferrer">
+            github.com/ArYa-KuWaR
+          </a>
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         07 — CONTACT
+         ══════════════════════════════════════ -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-num" aria-hidden="true">06 //</span>
+          <h2 class="section-title" id="contact-heading">CONTACT</h2>
+          <div class="section-line" aria-hidden="true"></div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="reveal">
+            <h3 class="contact-heading">
+              Let's find some<br>
+              <span>vulnerabilities</span><br>
+              together.
+            </h3>
+            <p class="contact-text">
+              Open to security roles, cloud infra hardening, research collaborations, and CTF teams.
+              If you're building something that needs breaking — professionally — let's talk.
+            </p>
+
+            <div class="contact-links">
+              <a href="mailto:aryakuwar28@gmail.com" class="contact-link">
+                <div class="contact-link-icon" aria-hidden="true">✉️</div>
+                <div>
+                  <div class="contact-link-text">aryakuwar28@gmail.com</div>
+                  <div class="contact-link-label">Email</div>
+                </div>
+              </a>
+
+              <a href="https://linkedin.com/in/arya-kuwar-41b79428b"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="contact-link">
+                <div class="contact-link-icon" aria-hidden="true">🔗</div>
+                <div>
+                  <div class="contact-link-text">linkedin.com/in/arya-kuwar-41b79428b</div>
+                  <div class="contact-link-label">LinkedIn</div>
+                </div>
+              </a>
+
+              <a href="https://github.com/ArYa-KuWaR"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="contact-link">
+                <div class="contact-link-icon" aria-hidden="true">⚡</div>
+                <div>
+                  <div class="contact-link-text">github.com/ArYa-KuWaR</div>
+                  <div class="contact-link-label">GitHub</div>
+                </div>
+              </a>
+
+              <a href="tel:+917843062962" class="contact-link">
+                <div class="contact-link-icon" aria-hidden="true">📱</div>
+                <div>
+                  <div class="contact-link-text">+91 7843062962</div>
+                  <div class="contact-link-label">Phone</div>
+                </div>
+              </a>
+            </div>
+          </div><!-- /contact-left -->
+
+          <div class="contact-right-card reveal">
+            <div class="contact-right-title">// SYSTEM STATUS</div>
+            <div class="avail-status">
+              <span class="availability-dot" aria-hidden="true"></span>
+              AVAILABLE FOR OPPORTUNITIES
+            </div>
+            <p class="open-to-label">Open to full-time, internship &amp; contract work:</p>
+            <ul class="open-to" role="list">
+              <li>Security Engineering roles</li>
+              <li>Cloud Security &amp; Hardening</li>
+              <li>Linux Systems Administration</li>
+              <li>Penetration Testing engagements</li>
+              <li>CTF team collaborations</li>
+              <li>Security research projects</li>
+            </ul>
+            <div class="contact-meta">
+              LOCATION: Pune, India<br>
+              RESPONSE TIME: &lt; 24h
+            </div>
+          </div>
+        </div><!-- /.contact-grid -->
+
+      </div>
+    </section>
+
+  </main><!-- /#main-content -->
+
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="footer-logo">ARYA KUWAR // 2025</div>
+    <div class="footer-right">
+      built with caffeine and curiosity — no vulnerabilities found (in this site, at least)
+    </div>
+  </footer>
+
+  <!-- Deferred JS — loaded after DOM parsed, no inline scripts (CSP-compliant) -->
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Security Policy — Arya Kuwar Portfolio
+# https://securitytxt.org/
+
+Contact: mailto:aryakuwar28@gmail.com
+Preferred-Languages: en
+Canonical: https://arya-kuwar.github.io/.well-known/security.txt
+
+# This is a static portfolio site with no backend, no user data,
+# no login, and no database. The attack surface is intentionally minimal.
+# If you find something interesting anyway — respect, send me an email.
